@@ -1,0 +1,16 @@
+If you downloaded binary package (i386.tar.gz):
+
+Just unpack the archive to some directory and run ./vodovod
+
+
+If you downloaded the source code (src.tar.gz):
+
+Unpack the arhive and type: make
+
+This should build the executable. Run it with ./vodovod
+
+
+Have fun :)
+
+
+For any comments, suggestions or ideas, contact me at mbabuskov@yahoo.com.

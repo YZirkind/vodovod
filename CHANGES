@@ -1,0 +1,5 @@
+- fixed the code so that the game doesn't consume 100% CPU while playing
+- added sound effects
+- added music
+- music and sfx volumne is adjustable from options menu
+- improved level generator to create more challenging levels after level 6
