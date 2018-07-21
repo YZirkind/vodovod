@@ -1,0 +1,3 @@
+Pipe shapes are referenced in code as characters.
+Render logic: map.cpp RegularShape::RegularShape(char which)
+Queue logic: game.cpp Game::AddShapeToQueue()

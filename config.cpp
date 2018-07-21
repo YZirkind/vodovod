@@ -21,7 +21,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <stdlib.h>
+#include <stdio.h>
+#include <sys/stat.h>
 #include "config.h"
+#include <climits>
 //------------------------------------------------------------------------------
 using namespace std;
 //-----------------------------------------------------------------------------
@@ -138,7 +142,7 @@ Config::Config()
     };
 
     int keys[] = { 274, 32, 276, 275, 273, 13 };
-    for (int i=0; i<sizeof(names)/sizeof(std::string); ++i)
+    for (unsigned int i=0; i<sizeof(names)/sizeof(std::string); ++i)
         if (dataM.find(names[i]) == dataM.end())
             setValue(names[i], keys[i]);
 
@@ -155,7 +159,19 @@ Config::~Config()
 //-----------------------------------------------------------------------------
 bool Config::save()
 {
-    std::ofstream file("vodovod.conf");
+    char vodovod_conf[PATH_MAX] = "vodovod.conf";
+
+#ifndef _WIN32
+    char *home = getenv("HOME");
+    if (home != NULL)
+    {
+        snprintf(vodovod_conf, sizeof(vodovod_conf), "%s/.vodovod", home);
+        mkdir(vodovod_conf, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    }
+    strncat(vodovod_conf, "/vodovod.conf", sizeof(vodovod_conf));
+#endif
+
+    std::ofstream file(vodovod_conf);
     if (!file)
         return false;
 
@@ -171,7 +187,15 @@ bool Config::save()
 // this gets called from main() so we're sure config.ini is in the right place
 bool Config::load()
 {
-    std::ifstream file("vodovod.conf");
+    char vodovod_conf[PATH_MAX] = "vodovod.conf";
+
+#ifndef _WIN32
+    char *home = getenv("HOME");
+    if (home != NULL)
+        snprintf(vodovod_conf, sizeof(vodovod_conf), "%s/.vodovod/vodovod.conf", home);
+#endif
+
+    std::ifstream file(vodovod_conf);
     if (!file)
         return false;
 

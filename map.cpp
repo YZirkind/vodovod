@@ -214,19 +214,48 @@ bool Shape::HasDirection(Direction)
     return false;
 }
 //-----------------------------------------------------------------------------
+// All pipe shapes are drawn with arms connecting to the center of the pipe's cell
+// to the adjancent cells.
+//
+// Given our shape character, determine which are arm directions are needed.
 RegularShape::RegularShape(char which)
     :Shape()
 {
-    for (int i=0; i<dNone; i++)
-        directionsM[i] = dNone;
-    if (which == '+' || which == '-' || which == 'J' || which == '7')
-        directionsM[dLeft] = dLeft;
-    if (which == '+' || which == '-' || which == 'F' || which == 'L')
-        directionsM[dRight] = dRight;
-    if (which == '+' || which == '|' || which == 'J' || which == 'L')
-        directionsM[dUp] = dUp;
-    if (which == '+' || which == '|' || which == 'F' || which == '7')
-        directionsM[dDown] = dDown;
+	for (int i=0; i<dNone; i++) {
+		directionsM[i] = dNone;
+	}
+
+	// +--  --+
+	// |      |
+	//
+	// |      |
+	// +--  --+
+
+
+	// L : Connected Right and Up.  Lower left corner.
+	// J : Connected Left and Up.  Lower right corner.
+	// F : Connected Right and Down.  Upper left corner.
+	// 7 : Connected Left and Down.  Upper right corner.
+	// - : Connected Left and Right.  Horizontal pipe.
+	// + : Connected in all directions.
+	// | : Connected Up and Down.  Vertical pipe.
+
+
+	if (which == '+' || which == '-' || which == 'J' || which == '7') {
+		directionsM[dLeft] = dLeft;
+	}
+
+	if (which == '+' || which == '-' || which == 'F' || which == 'L') {
+		directionsM[dRight] = dRight;
+	}
+
+	if (which == '+' || which == '|' || which == 'J' || which == 'L') {
+		directionsM[dUp] = dUp;
+	}
+
+	if (which == '+' || which == '|' || which == 'F' || which == '7') {
+		directionsM[dDown] = dDown;
+	}
 }
 //-----------------------------------------------------------------------------
 bool RegularShape::HasDirection(Direction d)

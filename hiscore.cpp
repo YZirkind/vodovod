@@ -17,8 +17,12 @@ You should have received a copy of the GNU General Public License
 along with Vodovod in file COPYING; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -----------------------------------------------------------------------------*/
-#include "stdio.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
 #include "hiscore.h"
+#include <climits>
+#include <cstring>
 //-----------------------------------------------------------------------------
 HiScores &hiScores()
 {
@@ -102,9 +106,21 @@ HiScores::HiScores()
 //-----------------------------------------------------------------------------
 HiScores::~HiScores()
 {
+    char hiscore_dat[PATH_MAX] = "hiscore.dat";
+
+#ifndef _WIN32
+    char *home = getenv("HOME");
+    if (home != NULL)
+    {
+        snprintf(hiscore_dat, sizeof(hiscore_dat), "%s/.vodovod", home);
+        mkdir(hiscore_dat, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    }
+    strncat(hiscore_dat, "/hiscore.dat", sizeof(hiscore_dat));
+#endif
+
     // save to file
     // format: NAME#POINTS#SWAPS#
-    FILE *fp = fopen("hiscore.dat", "w+");
+    FILE *fp = fopen(hiscore_dat, "w+");
     if (fp)
     {
         for (iterator it = begin(); it != end(); ++it)
