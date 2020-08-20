@@ -29,5 +29,5 @@ https://github.com/david-redick/vodovod/
 # Change Log
 
 * Renamed `NjamSetRect` to `SDL_Rect_set` as part of prep work for SDL2 migration.
-* Remove the Microsoft Windows specific code.
-
+* Removed the Microsoft Windows specific code.
+* Supports the XDG_CONFIG_HOME specification (aka `$HOME/.config/vodovod`).  The previous `$HOME/.vodovod` will be moved if it exists
