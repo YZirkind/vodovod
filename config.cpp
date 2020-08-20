@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include <sys/stat.h>
 #include "config.h"
 #include <climits>
+
 //------------------------------------------------------------------------------
 using namespace std;
 //-----------------------------------------------------------------------------
@@ -44,6 +45,45 @@ Config& config()
 {
     static Config c;
     return c;
+}
+//-----------------------------------------------------------------------------
+std::string Config::get_config_dir() {
+	// See https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
+	std::string my_dir = "";
+
+	char* xdg_config_home = getenv("XDG_CONFIG_HOME");
+	if (NULL == xdg_config_home || 0 == strcmp("", xdg_config_home)) {
+		// Default to $HOME/.config
+		char *home = getenv("HOME");
+		if (NULL == home) {
+			throw "HOME env variable not defined.";
+		}
+		my_dir = std::string(home) + std::string("/.config/vodovod");
+	} else {
+		my_dir = std::string(xdg_config_home) + std::string("/vodovod");
+	}
+
+	return my_dir;
+}
+//-----------------------------------------------------------------------------
+void Config::move_legacy_config(std::string config_dir) {
+	// In 1.10 and earlier, the config file was under $HOME/.vodovod
+	// If that exists move it to the given dir
+	char *home = getenv("HOME");
+	if (NULL == home) {
+		throw "HOME env variable not defined.";
+	}
+
+	std::string legacy_config = std::string(home) + std::string("/.vodovod");
+	struct stat buf;
+	int rc = stat(legacy_config.c_str(), &buf);
+	if (0 == rc) {
+		// Got a hit, let us move it.
+		//printf("rename legacy_config=%s to config_dir=%s\n", legacy_config.c_str(), config_dir.c_str());
+		int rc = rename(legacy_config.c_str(), config_dir.c_str());
+	} else {
+		//printf("Can't find legacy_config=%s\n", legacy_config.c_str());
+	}
 }
 //-----------------------------------------------------------------------------
 //! return true if value exists, false if not
@@ -160,21 +200,16 @@ Config::~Config()
 //-----------------------------------------------------------------------------
 bool Config::save()
 {
-    char vodovod_conf[PATH_MAX] = "vodovod.conf";
+	std::string config_dir = this->get_config_dir();
+	std::string path_to_config = config_dir + std::string("/vodovod.conf");
 
-    char *home = getenv("HOME");
-    if (home != NULL)
-    {
-        snprintf(vodovod_conf, sizeof(vodovod_conf), "%s/.vodovod", home);
-        mkdir(vodovod_conf, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-    }
-    strncat(vodovod_conf, "/vodovod.conf", sizeof(vodovod_conf));
+	//mkdir(vodovod_conf, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 
-    std::ofstream file(vodovod_conf);
+    std::ofstream file(path_to_config);
     if (!file)
         return false;
 
-    file << "Abandoned Bricks configuration file." << endl << endl << "[Settings]" << endl;
+    file << endl << "[Settings]" << endl;
     for (map<string, string>::const_iterator it = dataM.begin(); it != dataM.end(); ++it)
     {
         file << (*it).first << "=" << (*it).second << endl;
@@ -186,13 +221,12 @@ bool Config::save()
 // this gets called from main() so we're sure config.ini is in the right place
 bool Config::load()
 {
-    char vodovod_conf[PATH_MAX] = "vodovod.conf";
+	std::string config_dir = this->get_config_dir();
+	this->move_legacy_config(config_dir);
 
-    char *home = getenv("HOME");
-    if (home != NULL)
-        snprintf(vodovod_conf, sizeof(vodovod_conf), "%s/.vodovod/vodovod.conf", home);
+	std::string path_to_config = config_dir + std::string("/vodovod.conf");
 
-    std::ifstream file(vodovod_conf);
+    std::ifstream file(path_to_config);
     if (!file)
         return false;
 

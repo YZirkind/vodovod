@@ -24,11 +24,24 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "hiscore.h"
 #include <climits>
 #include <cstring>
+// For now we're keeping the high scores with the configuration.
+#include "config.h"
 //-----------------------------------------------------------------------------
 HiScores &hiScores()
 {
     static HiScores h;
     return h;
+}
+//-----------------------------------------------------------------------------
+std::string HiScores::get_high_score_dir() {
+	// For now we're keeping the high scores with the configuration.
+	// Should be /var/games/vodovod or $HOME/.local/share/vodovod
+	// Depending on local or system install.
+	return config().get_config_dir();
+}
+//-----------------------------------------------------------------------------
+void HiScores::move_legacy_dir(std::string high_score_dir) {
+	config().move_legacy_config(high_score_dir);
 }
 //-----------------------------------------------------------------------------
 void HiScores::addHiscore(std::string name, int level, int points)
@@ -51,8 +64,12 @@ bool HiScores::canEnter(int score)
 //-----------------------------------------------------------------------------
 HiScores::HiScores()
 {
-    // on Linux use /usr/share/abandoned/hiscore.dat  ?
-    FILE *fp = fopen("hiscore.dat", "r");
+	std::string high_score_dir = this->get_high_score_dir();
+	this->move_legacy_dir(high_score_dir);
+
+	std::string path_to_high_scores = high_score_dir + std::string("hiscore.dat");
+
+    FILE *fp = fopen(path_to_high_scores.c_str(), "r");
     if (!fp)
     {
         std::string defaultNames[] = {      // create default hiscore
@@ -107,20 +124,12 @@ HiScores::HiScores()
 //-----------------------------------------------------------------------------
 HiScores::~HiScores()
 {
-    char hiscore_dat[PATH_MAX] = "hiscore.dat";
-
-    char *home = getenv("HOME");
-    if (home != NULL)
-    {
-        snprintf(hiscore_dat, sizeof(hiscore_dat), "%s/.vodovod", home);
-        mkdir(hiscore_dat, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-    }
-    strncat(hiscore_dat, "/hiscore.dat", sizeof(hiscore_dat));
-
+	std::string high_score_dir = this->get_high_score_dir();
+	std::string path_to_high_scores = high_score_dir + std::string("hiscore.dat");
 
     // save to file
     // format: NAME#POINTS#SWAPS#
-    FILE *fp = fopen(hiscore_dat, "w+");
+    FILE *fp = fopen(path_to_high_scores.c_str(), "w+");
     if (fp)
     {
         for (iterator it = begin(); it != end(); ++it)

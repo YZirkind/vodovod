@@ -1,5 +1,6 @@
 /*-----------------------------------------------------------------------------
 Copyright 2007 Milan Babuskov
+Copyright 2020 David A. Redick
 
 This file is part of Vodovod
 
@@ -35,6 +36,10 @@ class HiScores
 {
     std::list<HiScore> list;
 public:
+	std::string get_high_score_dir();
+	void move_legacy_dir(std::string high_score_dir);
+
+
     typedef std::list<HiScore>::iterator iterator;
     void addHiscore(std::string name, int level, int points);
     bool canEnter(int score);

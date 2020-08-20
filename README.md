@@ -12,7 +12,7 @@ Have fun :)
 
 --
 
-Originally written by Milan Babuskov <mbabuskov@yahoo.com>
+Originally written by Milan Babuškov <mbabuskov@yahoo.com>
 
 Currently maintained by David A. Redick <david.a.redick@gmail.com>
 And based off the vodovod 1.10 source code from

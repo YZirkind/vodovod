@@ -1,5 +1,6 @@
 /*-----------------------------------------------------------------------------
 Copyright 2007 Milan Babuskov
+Copyright 2020 David A. Redick
 
 This file is part of Vodovod
 
@@ -36,6 +37,9 @@ SDLKey getKey(taAction action);
 class Config
 {
 public:
+	std::string get_config_dir();
+	void move_legacy_config(std::string config_dir);
+
     bool save();
     bool load();
 
