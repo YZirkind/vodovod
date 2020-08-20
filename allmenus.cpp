@@ -1,5 +1,6 @@
 /*-----------------------------------------------------------------------------
 Copyright 2007 Milan Babuskov
+Copyright 2020 David A. Redick
 
 This file is part of Vodovod
 
@@ -91,15 +92,15 @@ void DrawHelp()
 
     SDL_Surface *brick = Data->getGfx("blocks");
     SDL_Rect src, dest;
-    NjamSetRect(src, 0, 0, 60, 60);
-    NjamSetRect(dest, 131, 273);
+    SDL_Rect_set(src, 0, 0, 60, 60);
+    SDL_Rect_set(dest, 131, 273);
     SDL_BlitSurface(brick, &src, Screen, &dest);
 
-    NjamSetRect(src, 60, 0, 60, 60);
-    NjamSetRect(dest, 131, 343);
+    SDL_Rect_set(src, 60, 0, 60, 60);
+    SDL_Rect_set(dest, 131, 343);
     SDL_BlitSurface(brick, &src, Screen, &dest);
 
-    NjamSetRect(dest, 131, 413, 60, 60);
+    SDL_Rect_set(dest, 131, 413, 60, 60);
     Box(Screen, dest, 1, 0, 0, 0);
     SlowShape ssh;
     ssh.Render(131, 413);
@@ -137,12 +138,12 @@ void MainMenu::render()
     const int hsx = 420;
     const int hsy = 180;
 
-    NjamSetRect(r, hsx, hsy, 38*whiteFontM.GetCharWidth(), 18*whiteFontM.GetCharHeight()+font->GetCharWidth());
+    SDL_Rect_set(r, hsx, hsy, 38*whiteFontM.GetCharWidth(), 18*whiteFontM.GetCharHeight()+font->GetCharWidth());
     SDL_FillRect(Screen, &r, 0);
     Box(Screen, r, 1, 150, 150, 100);
     font->WriteTextXY(Screen, hsx+80, hsy+4, "TOP 15 PLAYERS");
     whiteFontM.WriteTextXY(Screen, hsx+5, hsy+2*whiteFontM.GetCharHeight(), "   NAME               LEVEL   POINTS");
-    NjamSetRect(r, hsx+5, hsy+3*whiteFontM.GetCharHeight(), 36*whiteFontM.GetCharWidth(), 1);
+    SDL_Rect_set(r, hsx+5, hsy+3*whiteFontM.GetCharHeight(), 36*whiteFontM.GetCharWidth(), 1);
     Box(Screen, r, 1, 150, 150, 100);
 
     HiScores &hs = hiScores();

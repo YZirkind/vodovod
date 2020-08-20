@@ -1,5 +1,6 @@
 /*-----------------------------------------------------------------------------
 Copyright 2007 Milan Babuskov
+Copyright 2020 David A. Redick
 
 This file is part of Vodovod
 
@@ -39,25 +40,25 @@ void RenderBackground(int housex)
     SDL_Surface *tree  = Data->getGfx("tree1");
 
     SDL_Rect r;
-    NjamSetRect(r, 0, 97, 800, 503);
+    SDL_Rect_set(r, 0, 97, 800, 503);
     PatternFill(r, dirt, Screen);
-    NjamSetRect(r, 10, 110, 779, 419);
+    SDL_Rect_set(r, 10, 110, 779, 419);
     Box(Screen, r, 1, 30, 30, 30);
 
-    NjamSetRect(r, 0, 0, 800, 94);
+    SDL_Rect_set(r, 0, 0, 800, 94);
     Uint8 from[] = {  40, 183, 208 };
     Uint8 to[]   = { 227, 245, 249 };
     Gradient(Screen, r, from, to);
 
-    NjamSetRect(r, 0, 94, 800, 3);
+    SDL_Rect_set(r, 0, 94, 800, 3);
     Uint8 gfrom[] = { 103, 176,  0 };
     Uint8 gto[]   = {  66, 228, 28 };
     Gradient(Screen, r, gfrom, gto);
 
-    NjamSetRect(r, housex, 55);
+    SDL_Rect_set(r, housex, 55);
     SDL_BlitSurface(house, 0, Screen, &r);
 
-    NjamSetRect(r, housex < 500 ? 700 : 100, 51);
+    SDL_Rect_set(r, housex < 500 ? 700 : 100, 51);
     SDL_BlitSurface(tree, 0, Screen, &r);
 }
 //-----------------------------------------------------------------------------
@@ -139,7 +140,7 @@ int main(int /* argc */, char ** /* argv */)
         RenderBackground(630);
 
         SDL_Rect r;
-        NjamSetRect(r, 50, 150);
+        SDL_Rect_set(r, 50, 150);
         SDL_BlitSurface(vodovod, 0, Screen, &r);
         SDL_Flip(Screen);
 

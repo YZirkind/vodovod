@@ -1,5 +1,6 @@
 /*-----------------------------------------------------------------------------
 Copyright 2007 Milan Babuskov
+Copyright 2020 David A. Redick
 
 This file is part of Vodovod
 
@@ -136,7 +137,7 @@ void Gradient(SDL_Surface *surface, SDL_Rect& r, Uint8 *from, Uint8 *to)
     }
     for (int y = 0; y < r.h; y++)
     {
-        NjamSetRect(c, r.x, r.y+y, r.w, 1);
+        SDL_Rect_set(c, r.x, r.y+y, r.w, 1);
         Uint32 rgb = SDL_MapRGB(surface->format,
             (Uint8)color[0], (Uint8)color[1], (Uint8)color[2]);
         SDL_FillRect(surface, &c, rgb);
@@ -185,13 +186,13 @@ void PatternFill(SDL_Rect& rect, SDL_Surface *pattern, SDL_Surface *surface)
     {
         for (int y=0; y < h2/h1 + 1; y++)
         {
-            NjamSetRect(to, rect.x + x * w1, rect.y + y * h1);
+            SDL_Rect_set(to, rect.x + x * w1, rect.y + y * h1);
             SDL_BlitSurface(pattern, NULL, surface, &to);
         }
     }
 }
 //-----------------------------------------------------------------------------
-void NjamSetRect(SDL_Rect& rect, int x, int y, int w, int h)
+void SDL_Rect_set(SDL_Rect& rect, int x, int y, int w, int h)
 {
     rect.x = x;
     rect.y = y;
@@ -274,16 +275,16 @@ bool SurfaceEffect(SDL_Surface *surface, SDL_Rect& r, tEffect Effect)
 void Box(SDL_Surface *surface, SDL_Rect& rect, int border, Uint8 r, Uint8 g, Uint8 b)
 {
     SDL_Rect rc;
-    NjamSetRect(rc, rect.x, rect.y, rect.w, border);    // upper
+    SDL_Rect_set(rc, rect.x, rect.y, rect.w, border);    // upper
     SDL_FillRect(surface, &rc, SDL_MapRGB(surface->format, r, g, b));
 
-    NjamSetRect(rc, rect.x, rect.y+rect.h-border, rect.w, border);  // lower
+    SDL_Rect_set(rc, rect.x, rect.y+rect.h-border, rect.w, border);  // lower
     SDL_FillRect(surface, &rc, SDL_MapRGB(surface->format, r, g, b));
 
-    NjamSetRect(rc, rect.x, rect.y, border, rect.h);    // left
+    SDL_Rect_set(rc, rect.x, rect.y, border, rect.h);    // left
     SDL_FillRect(surface, &rc, SDL_MapRGB(surface->format, r, g, b));
 
-    NjamSetRect(rc, rect.x+rect.w-border, rect.y, border, rect.h);  // right
+    SDL_Rect_set(rc, rect.x+rect.w-border, rect.y, border, rect.h);  // right
     SDL_FillRect(surface, &rc, SDL_MapRGB(surface->format, r, g, b));
 }
 //-----------------------------------------------------------------------------

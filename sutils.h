@@ -31,7 +31,9 @@ void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel);
 bool LoadImage(SDL_Surface **surface, const char *filename);
 bool RGB2OneColor(SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b);
 void PatternFill(SDL_Rect& rect, SDL_Surface *pattern, SDL_Surface *surface);
-void NjamSetRect(SDL_Rect& rect, int x, int y, int w=0, int h=0);
+void SDL_Rect_set(SDL_Rect& rect, int x, int y, int w=0, int h=0);
+
+
 void Gradient(SDL_Surface *surface, SDL_Rect& r, Uint8 *from, Uint8 *to);
 SDLKey NjamGetch(bool Wait);
 int NjamRandom(int MaxValue);

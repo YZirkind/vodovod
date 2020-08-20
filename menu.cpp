@@ -1,5 +1,6 @@
 /*-----------------------------------------------------------------------------
 Copyright 2007 Milan Babuskov
+Copyright 2020 David A. Redick
 
 This file is part of Vodovod
 
@@ -152,13 +153,13 @@ SDLKey Menu::Message(std::string text)
     draw(false);    // render background
 
     SDL_Rect dest;
-    NjamSetRect(dest, (screenw-l*w-50)/2, 195, l*w+50, 55);
+    SDL_Rect_set(dest, (screenw-l*w-50)/2, 195, l*w+50, 55);
     SDL_FillRect(Screen, &dest, 0);
     Uint32 FillColor = SDL_MapRGB(Screen->format, 220, 50, 0);
-    NjamSetRect(dest, (screenw-l*w-50)/2 + 1, 196, l*w+48, 53);
+    SDL_Rect_set(dest, (screenw-l*w-50)/2 + 1, 196, l*w+48, 53);
     SDL_FillRect(Screen, &dest, FillColor);
 
-    NjamSetRect(dest, (screenw-l*w-30)/2, 205, l*w+30, 35);
+    SDL_Rect_set(dest, (screenw-l*w-30)/2, 205, l*w+30, 35);
     SDL_FillRect(Screen, &dest, 0);
 
     font->WriteTextXY(Screen, (screenw-l*w)/2, 215, text.c_str());

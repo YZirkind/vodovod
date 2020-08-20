@@ -1,5 +1,6 @@
 /*-----------------------------------------------------------------------------
 Copyright 2007 Milan Babuskov
+Copyright 2020 David A. Redick
 
 This file is part of Vodovod
 
@@ -177,11 +178,11 @@ void Game::RenderScene(bool flip)
 
     SDL_Rect r;
     SDL_Surface *next = Data->getGfx("next", "data/next.png");
-    NjamSetRect(r, 363, 533);
+    SDL_Rect_set(r, 363, 533);
     SDL_BlitSurface(next, 0, Screen, &r);
 
     SDL_Surface *queue = Data->getGfx("queue");
-    NjamSetRect(r, 424, 532);
+    SDL_Rect_set(r, 424, 532);
     SDL_BlitSurface(queue, 0, Screen, &r);
     int i = 0;
     for (std::deque<Shape *>::iterator it = queueM.begin();
@@ -189,7 +190,7 @@ void Game::RenderScene(bool flip)
     {
         (*it)->Render(i*60+427, 534);
 
-        NjamSetRect(r, i*60+427, 534, 61, 60);
+        SDL_Rect_set(r, i*60+427, 534, 61, 60);
         Box(Screen, r, 1, 75, 75, 75);
     }
 
@@ -333,12 +334,12 @@ void Game::getName(char *name)
     while (true)
     {
         SDL_Rect dest;
-        NjamSetRect(dest, xp, yp, fieldw, fieldh);
+        SDL_Rect_set(dest, xp, yp, fieldw, fieldh);
         SDL_FillRect(Screen, &dest, 0);
-        NjamSetRect(dest, xp+1, yp+1, fieldw-2, fieldh-2);
+        SDL_Rect_set(dest, xp+1, yp+1, fieldw-2, fieldh-2);
         SDL_FillRect(Screen, &dest, back);
         font->WriteTextXY(Screen, textx, yp+font->GetCharHeight()/2, "*** NEW HISCORE ***");
-        NjamSetRect(dest, textx, texty, textw, font->GetCharHeight()+1);
+        SDL_Rect_set(dest, textx, texty, textw, font->GetCharHeight()+1);
         SDL_FillRect(Screen, &dest, 0);
         font->WriteTextXY(Screen, textx+1, texty+1, name);
 
@@ -354,7 +355,7 @@ void Game::getName(char *name)
 
         if (CursorOn)
         {
-            NjamSetRect(dest, textx + font->GetCharWidth() * l + 2, texty+2, font->GetCharWidth()-2,
+            SDL_Rect_set(dest, textx + font->GetCharWidth() * l + 2, texty+2, font->GetCharWidth()-2,
                 font->GetCharHeight()-2);   // draw cursor
             SDL_FillRect(Screen, &dest, white);
         }
@@ -396,13 +397,13 @@ void Game::Message(const std::string& text, bool wait)
 
     // render background
     SDL_Rect dest;
-    NjamSetRect(dest, (screenw-l*w-50)/2, 245, l*w+50, 55);
+    SDL_Rect_set(dest, (screenw-l*w-50)/2, 245, l*w+50, 55);
     SDL_FillRect(Screen, &dest, 0);
     Uint32 FillColor = SDL_MapRGB(Screen->format, 255, 200, 0);
-    NjamSetRect(dest, (screenw-l*w-50)/2 + 1, 246, l*w+48, 53);
+    SDL_Rect_set(dest, (screenw-l*w-50)/2 + 1, 246, l*w+48, 53);
     SDL_FillRect(Screen, &dest, FillColor);
 
-    NjamSetRect(dest, (screenw-l*w-30)/2, 255, l*w+30, 35);
+    SDL_Rect_set(dest, (screenw-l*w-30)/2, 255, l*w+30, 35);
     SDL_FillRect(Screen, &dest, 0);
 
     fontM.WriteTextXY(Screen, (screenw-l*w)/2, 265, text.c_str());

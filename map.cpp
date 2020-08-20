@@ -1,5 +1,6 @@
 /*-----------------------------------------------------------------------------
 Copyright 2007 Milan Babuskov
+Copyright 2020 David A. Redick
 
 This file is part of Vodovod
 
@@ -120,8 +121,8 @@ void CheckPoint::Render(int x, int y, int scale)
 {
     SDL_Surface *block = Data->getGfx("blocks");
     SDL_Rect src, dest;
-    NjamSetRect(src,  60, 0, 60, 60);
-    NjamSetRect(dest, x, y);
+    SDL_Rect_set(src,  60, 0, 60, 60);
+    SDL_Rect_set(dest, x, y);
     SDL_BlitSurface(block, &src, Screen, &dest);
     RegularShape::Render(x, y, scale);
 }
@@ -154,7 +155,7 @@ void RegularShape::Render(int x, int y, int scale)
         if (d == i || d == dFull)
         {
             SDL_Rect r;
-            NjamSetRect(r, x+lef[i], y+top[i], wid[i], hei[i]);
+            SDL_Rect_set(r, x+lef[i], y+top[i], wid[i], hei[i]);
             SDL_FillRect(Screen, &r, black);
         }
     }
@@ -171,7 +172,7 @@ void RegularShape::Render(int x, int y, int scale)
         if (d == dFull)
         {
             SDL_Rect r;
-            NjamSetRect(r, x+lefo[i]+xi, y+topo[i]+yi, wido[i]-xi*2, heio[i]-yi*2);
+            SDL_Rect_set(r, x+lefo[i]+xi, y+topo[i]+yi, wido[i]-xi*2, heio[i]-yi*2);
             SDL_FillRect(Screen, &r, water);
         }
     }
@@ -184,26 +185,26 @@ void RegularShape::Render(int x, int y, int scale)
             Direction d = flowFromM;
             int kw = (cell*fillM)/GetSpeed();
             if (d == dLeft)
-                NjamSetRect(r, x,          y+top[d]+1, kw, hei[d]-2);
+                SDL_Rect_set(r, x,          y+top[d]+1, kw, hei[d]-2);
             if (d == dRight)
-                NjamSetRect(r, x+cell-kw,  y+top[d]+1, kw, hei[d]-2);
+                SDL_Rect_set(r, x+cell-kw,  y+top[d]+1, kw, hei[d]-2);
             if (d == dUp)
-                NjamSetRect(r, x+lef[d]+1, y,          wid[d]-2, kw);
+                SDL_Rect_set(r, x+lef[d]+1, y,          wid[d]-2, kw);
             if (d == dDown)
-                NjamSetRect(r, x+lef[d]+1, y+cell-kw,  wid[d]-2, kw);
+                SDL_Rect_set(r, x+lef[d]+1, y+cell-kw,  wid[d]-2, kw);
         }
         else
         {
             Direction d = flowToM;
             int kw = (cell*(fillM-cell/2))/GetSpeed();
             if (d == dRight)
-                NjamSetRect(r, x+cell/2,          y+top[d]+1, kw, hei[d]-2);
+                SDL_Rect_set(r, x+cell/2,          y+top[d]+1, kw, hei[d]-2);
             if (d == dLeft)
-                NjamSetRect(r, x+cell/2-kw,  y+top[d]+1, kw, hei[d]-2);
+                SDL_Rect_set(r, x+cell/2-kw,  y+top[d]+1, kw, hei[d]-2);
             if (d == dDown)
-                NjamSetRect(r, x+lef[d]+1, y+cell/2,          wid[d]-2, kw);
+                SDL_Rect_set(r, x+lef[d]+1, y+cell/2,          wid[d]-2, kw);
             if (d == dUp)
-                NjamSetRect(r, x+lef[d]+1, y+cell/2-kw,  wid[d]-2, kw);
+                SDL_Rect_set(r, x+lef[d]+1, y+cell/2-kw,  wid[d]-2, kw);
         }
         SDL_FillRect(Screen, &r, water);
     }
@@ -278,7 +279,7 @@ void SlowShape::Render(int x, int y, int scale)
     Uint32 water = SDL_MapRGB(Screen->format, 0, 180, 250);
 
     SDL_Rect r;
-    NjamSetRect(r, x,   y+(cell-w)/2, cell,   w*3);
+    SDL_Rect_set(r, x,   y+(cell-w)/2, cell,   w*3);
     SDL_FillRect(Screen, &r, black);
 
     // render ooze
@@ -286,12 +287,12 @@ void SlowShape::Render(int x, int y, int scale)
     {
         if (flowFromM == dLeft || fillM >= GetSpeed())
         {
-            NjamSetRect(r, x, y+(cell-w)/2+1, 1, w-2);
+            SDL_Rect_set(r, x, y+(cell-w)/2+1, 1, w-2);
             SDL_FillRect(Screen, &r, water);
         }
         if (flowFromM == dRight || fillM >= GetSpeed())
         {
-            NjamSetRect(r, x+cell-1, y+(cell-w)/2+1, 1, w-2);
+            SDL_Rect_set(r, x+cell-1, y+(cell-w)/2+1, 1, w-2);
             SDL_FillRect(Screen, &r, water);
         }
 
@@ -301,7 +302,7 @@ void SlowShape::Render(int x, int y, int scale)
             int startfrom = x+1;
             if (flowFromM == dRight)
                 startfrom = x+cell-len-1;
-            NjamSetRect(r, startfrom, y+(cell-w)/2+1, len, w*3-2);
+            SDL_Rect_set(r, startfrom, y+(cell-w)/2+1, len, w*3-2);
             SDL_FillRect(Screen, &r, water);
         }
     }
@@ -331,8 +332,8 @@ void Obstacle::Render(int x, int y, int /* scale */)
     if (!block)
         return;
     SDL_Rect src, dest;
-    NjamSetRect(src,  0, 0, 60, 60);
-    NjamSetRect(dest, x, y);
+    SDL_Rect_set(src,  0, 0, 60, 60);
+    SDL_Rect_set(dest, x, y);
     SDL_BlitSurface(block, &src, Screen, &dest);
 }
 //-----------------------------------------------------------------------------
@@ -451,7 +452,7 @@ void Map::RenderNextShape(Shape *s)
 {
     const int cell = 60;
     SDL_Rect r;
-    NjamSetRect(r, xoffM+cell*xCursorM, yoffM+cell*yCursorM, 14, 14);
+    SDL_Rect_set(r, xoffM+cell*xCursorM, yoffM+cell*yCursorM, 14, 14);
     Uint32 yellow = SDL_MapRGB(Screen->format, 255, 255, 0);
     SDL_FillRect(Screen, &r, yellow);
     s->Render(xoffM+cell*xCursorM, yoffM+cell*yCursorM, 4);
@@ -463,7 +464,7 @@ void Map::Render()
     SDL_Rect r;
     RenderBackground(xStartM*60 - 27);  // 633 = 11
     SDL_Surface *tank = Data->getGfx("tank", "data/tank.png");
-    NjamSetRect(r, 12, 529);
+    SDL_Rect_set(r, 12, 529);
     SDL_BlitSurface(tank, 0, Screen, &r);
 
     const Uint32 black = SDL_MapRGB(Screen->format, 0, 0, 0);
@@ -481,7 +482,7 @@ void Map::Render()
                     w = 60;
                 if (y == heightM-1)
                     h = 60;
-                NjamSetRect(r, x*60+xoffM, y*60+yoffM, w, h);
+                SDL_Rect_set(r, x*60+xoffM, y*60+yoffM, w, h);
                 Box(Screen, r, 1, 30, 30, 30);
             }
         }
@@ -494,7 +495,7 @@ void Map::Render()
                 fieldsM[y*widthM+x]->Render(x*60+xoffM, y*60+yoffM, 1);
 
     // render beneath the house
-    NjamSetRect(r, xStartM*60+36, 94, 8, 17);
+    SDL_Rect_set(r, xStartM*60+36, 94, 8, 17);
     SDL_FillRect(Screen, &r, black);
 
     const int cell = 60;
@@ -505,12 +506,12 @@ void Map::Render()
         if (h > 16)
             h = 16;
         const Uint32 water = SDL_MapRGB(Screen->format, 0, 180, 250);
-        NjamSetRect(r, xStartM*cell+xoffM+(cell-w)/2, yoffM-15, w, h);
+        SDL_Rect_set(r, xStartM*cell+xoffM+(cell-w)/2, yoffM-15, w, h);
         SDL_FillRect(Screen, &r, water);
     }
 
     // render cursor
-    NjamSetRect(r, xoffM+cell*xCursorM, yoffM+cell*yCursorM, cell, cell);
+    SDL_Rect_set(r, xoffM+cell*xCursorM, yoffM+cell*yCursorM, cell, cell);
     Box(Screen, r, 2, 255, 255, 0);
 
     // walk
@@ -520,8 +521,8 @@ void Map::Render()
         static int frame = 0;
         double p = 6 - ((frame++ / 5) % 7);
         SDL_Rect src, dest;
-        NjamSetRect(src, (int)(p*7.5), 0, 8, 13);
-        NjamSetRect(dest, xStartM*60 - 10 + (50+flowM)/5, 81);  // 5 = speed
+        SDL_Rect_set(src, (int)(p*7.5), 0, 8, 13);
+        SDL_Rect_set(dest, xStartM*60 - 10 + (50+flowM)/5, 81);  // 5 = speed
         SDL_BlitSurface(human, &src, Screen, &dest);
     }
 }
