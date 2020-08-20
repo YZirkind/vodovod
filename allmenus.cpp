@@ -164,7 +164,6 @@ void MainMenu::render()
         "MILAN BABUSKOV PRESENTS",
         "VODOVOD",
         "VERSION " PROG_VERSION,
-        "HTTP://HOME.GNA.ORG/VODOVOD/",
         "CONSTRUCT THE PIPELINE BEFORE WATER RUNS FREE",
         "HAVE FUN PLAYING",
         " "
