@@ -1,5 +1,6 @@
 #
 # Copyright 2007 Milan Babuskov
+# Copyright 2020 David A. Redick
 #
 # This file is part of Vodovod game
 #
@@ -27,8 +28,6 @@ PROGRAM = vodovod
 OBJECTS = game.o map.o resource.o main.o allmenus.o njamfont.o sutils.o menu.o hiscore.o effects.o config.o keys.o
 CC = g++
 
-# If you hate warnings under Cygwin use these flags instead
-# MY_CFLAGS = -I/usr/local/include/SDL -Dmain=SDL_main -DWIN32 -Uunix -mno-cygwin
 MY_CFLAGS = `sdl-config --cflags`
 
 %.o:	%.cpp
@@ -42,6 +41,3 @@ $(PROGRAM):	$(OBJECTS)
 clean:
 	$(RM) *.o
 	$(RM) $(PROGRAM)
-	$(RM) $(PROGRAM).exe
-
-

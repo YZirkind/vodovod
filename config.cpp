@@ -1,5 +1,6 @@
 /*-----------------------------------------------------------------------------
 Copyright 2007 Milan Babuskov
+Copyright 2020 David A. Redick
 
 This file is part of Vodovod
 
@@ -161,7 +162,6 @@ bool Config::save()
 {
     char vodovod_conf[PATH_MAX] = "vodovod.conf";
 
-#ifndef _WIN32
     char *home = getenv("HOME");
     if (home != NULL)
     {
@@ -169,7 +169,6 @@ bool Config::save()
         mkdir(vodovod_conf, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
     }
     strncat(vodovod_conf, "/vodovod.conf", sizeof(vodovod_conf));
-#endif
 
     std::ofstream file(vodovod_conf);
     if (!file)
@@ -189,11 +188,9 @@ bool Config::load()
 {
     char vodovod_conf[PATH_MAX] = "vodovod.conf";
 
-#ifndef _WIN32
     char *home = getenv("HOME");
     if (home != NULL)
         snprintf(vodovod_conf, sizeof(vodovod_conf), "%s/.vodovod/vodovod.conf", home);
-#endif
 
     std::ifstream file(vodovod_conf);
     if (!file)

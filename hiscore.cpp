@@ -1,5 +1,6 @@
 /*-----------------------------------------------------------------------------
 Copyright 2007 Milan Babuskov
+Copyright 2020 David A. Redick
 
 This file is part of Vodovod
 
@@ -108,7 +109,6 @@ HiScores::~HiScores()
 {
     char hiscore_dat[PATH_MAX] = "hiscore.dat";
 
-#ifndef _WIN32
     char *home = getenv("HOME");
     if (home != NULL)
     {
@@ -116,7 +116,7 @@ HiScores::~HiScores()
         mkdir(hiscore_dat, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
     }
     strncat(hiscore_dat, "/hiscore.dat", sizeof(hiscore_dat));
-#endif
+
 
     // save to file
     // format: NAME#POINTS#SWAPS#

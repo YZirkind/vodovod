@@ -29,4 +29,5 @@ https://github.com/david-redick/vodovod/
 # Change Log
 
 * Renamed `NjamSetRect` to `SDL_Rect_set` as part of prep work for SDL2 migration.
+* Remove the Microsoft Windows specific code.
 
