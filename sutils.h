@@ -1,5 +1,6 @@
 /*-----------------------------------------------------------------------------
 Copyright 2007 Milan Babuskov
+Copyright 2020 David A. Redick
 
 This file is part of Vodovod
 
@@ -24,7 +25,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "SDL.h"
 #include "SDL_mixer.h"
 
-#define PROG_VERSION "1.10"
+#define PROG_VERSION "1.11"
 //-----------------------------------------------------------------------------
 Uint32 getpixel(SDL_Surface *surface, int x, int y);
 void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel);
